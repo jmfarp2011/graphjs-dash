@@ -1,28 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" type="text/css" media="all" />
 </head>
 <body>
-    <div id="main"></div>
+    <div id="main" class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Panel title</h3>
+                </div>
+                <div class="panel-body" id="container">
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="LayoutWidget.js"></script>
     <script type="text/javascript">
-        var dashboard = new Dashboard('main');
-        dashboard.bind({name: 'something really cool', type: 'widget engine'});
+        var dashboard = new Dashboard('container');
+        dashboard.bind({name: 'something really cool', type: 'widget engine', age: 23});
+        dashboard.layout({
+           rows: [{
+                cols:[{
+                    widget: "person",
+                    span: 8
+                },{
+                    widget: 'age',
+                    span: 4
+                }]
+            }]
+        });
         dashboard.register(new Widget({
-            id: 'simple',
-            span: 12,
+            id: 'person',
             init: function(dataObject){
-                $('#simple').text(dataObject.type);
+                $('#person').html(dataObject.name + '<br/>' + dataObject.type);
             },
             update: function(dataObject){
-                $('#simple').text(dataObject.type);
+                $('#person').html(dataObject.name + '<br/>' + dataObject.type);
+            }
+        }));
+        dashboard.register(new Widget({
+            id: 'age',
+            init: function(dataObject){
+                $('#age').text(dataObject.age);
+            },
+            update: function(dataObject){
+                $('#age').text(dataObject.age);
             }
         }));
         setTimeout(function() {
-            dashboard.update({name: 'something really cool', type: 'show me something changing'});
-        }, 5000);
+            dashboard.update({name: 'something really cool', type: 'show me something changing', age: 25});
+        }, 1000);
         
     </script>
 </body>
